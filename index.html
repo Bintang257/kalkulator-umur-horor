@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kalkulator umur horor dengan tema batu nisan zombie dan backsound menyeramkan">
+  <title>Kalkulator Umur Horor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Eater&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #00ff00;
+      --shadow-color: rgba(0, 255, 0, 0.3);
+      --background-dark: rgba(20, 20, 20, 0.9);
+    }
+
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background-color: #000 !important;
+      color: #ccc !important;
+      font-family: 'Creepster', cursive !important;
+      min-height: 100vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      overflow-x: hidden !important;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxmaWx0ZXIgaWQ9Im5vaXNlIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC42NSIgbnVtT2N0YXZlcz0iMyIgc3RpdGNoVGlsZXM9InN0aXRjaCI+PC9mZVR1cmJ1bGVuY2U+PGZlQmxlbmQgbW9kZT0ib3ZlcmxheSIgaW49IlNvdXJjZUdyYXBoaWMiPjwvZmVCbGVuZD48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbmlzZSkiIG9wYWNpdHk9IjAuMDUiPjwvcmVjdD48L3N2Zz4=') !important;
+      -webkit-font-smoothing: antialiased !important;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .fog {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9Im5vbmUiLz48ZmlsdGVyIGlkPSJmb2ciPjxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjAxIiBudW1PY3RhdmVzPSIzIi8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPSIxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAgMCAwIDAgMCAxIDAiLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjZm9nKSIgb3BhY2l0eT0iMC4xNSIvPjwvc3ZnPg==');
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 90%;
+      background-color: var(--background-dark);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 30px var(--shadow-color);
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-family: 'Eater', cursive;
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: clamp(1.8rem, 5vw, 2.2rem);
+      text-shadow: 0 0 15px var(--shadow-color);
+      animation: flicker 3s infinite;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--primary-color);
+      font-size: clamp(1rem, 3vw, 1.1rem);
+      text-shadow: 0 0 5px var(--shadow-color);
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--primary-color);
+      background-color: rgba(0, 0, 0, 0.8);
+      color: var(--primary-color);
+      border-radius: 5px;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      font-family: 'Creepster', cursive;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 10px var(--primary-color);
+    }
+
+    button {
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      cursor: pointer;
+      width: 100%;
+      font-family: 'Creepster', cursive;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin: 10px 0;
+    }
+
+    button:hover, button:focus {
+      background-color: #00cc00;
+      box-shadow: 0 0 15px var(--shadow-color);
+    }
+
+    .tombstone {
+      width: clamp(250px, 80%, 300px);
+      height: auto;
+      min-height: 400px;
+      background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+      border-radius: 20px 20px 0 0;
+      margin: 30px auto;
+      padding: 20px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), inset 0 0 10px rgba(0, 255, 0, 0.2);
+      text-align: center;
+      position: relative;
+      display: none;
+      border: 3px solid #333;
+      font-family: 'Creepster', cursive;
+      color: var(--primary-color);
+      text-shadow: 0 0 5px var(--shadow-color);
+    }
+
+    .tombstone::before {
+      content: "☠";
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      color: var(--primary-color);
+      text-shadow: 0 0 10px var(--shadow-color);
+    }
+
+    .tombstone::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: linear-gradient(to top, #1a1a1a, transparent);
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 5px;
+      display: none;
+    }
+
+    .result h2 {
+      color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: clamp(1.2rem, 3vw, 1.4rem);
+    }
+
+    .result-item {
+      margin-bottom: 8px;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .result-value {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .message {
+      margin: 15px 0;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      text-align: center;
+      color: var(--primary-color);
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    .reset-button {
+      display: none;
+      margin: 10px auto;
+    }
+
+    .ghost {
+      position: fixed;
+      top: -100px;
+      font-size: clamp(30px, 8vw, 50px);
+      animation: float 20s infinite linear;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 2;
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(100vh) translateX(100vw) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 1; }
+      93% { opacity: 0.4; }
+      94% { opacity: 1; }
+      96% { opacity: 0.6; }
+      97% { opacity: 1; }
+    }
+
+    @keyframes spin {
+      0% { transform: rotateY(0deg); opacity: 0; }
+      100% { transform: rotateY(720deg); opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      html, body {
+        background-color: #000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: 'Creepster', cursive !important;
+        min-height: 100vh !important;
+      }
+
+      .container {
+        padding: 15px;
+        width: 95%;
+      }
+
+      h1 {
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 12px;
+      }
+
+      button {
+        padding: 8px;
+      }
+
+      .tombstone {
+        min-height: 350px;
+        padding: 15px;
+      }
+
+      .result {
+        padding: 8px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 900px;
+      }
+
+      .tombstone {
+        width: 350px;
+        min-height: 450px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="fog"></div>
+  <div class="ghost">👻</div>
+
+  <div class="container">
+    <h1>KALKULATOR UMUR HOROR</h1>
+
+    <form id="age-form">
+      <div class="form-group">
+        <label for="name">Nama Lengkap:</label>
+        <input type="text" id="name" placeholder="Masukkan nama..." required aria-required="true" />
+      </div>
+      <div class="form-group">
+        <label for="birthdate">Tanggal Lahir:</label>
+        <input type="date" id="birthdate" required aria-required="true" />
+      </div>
+      <button type="submit">HITUNG UMUR</button>
+    </form>
+
+    <div class="tombstone" id="tombstone" role="region" aria-live="polite">
+      <h3 id="tombstone-name"></h3>
+      <p id="tombstone-birth"></p>
+      <p>hingga</p>
+      <p id="tombstone-now"></p>
+      <div class="result" id="result">
+        <h2>TOTAL WAKTU HIDUP</h2>
+        <div class="result-item">
+          <span>Tahun:</span>
+          <span class="result-value" id="years">0</span>
+        </div>
+        <div class="result-item">
+          <span>Bulan:</span>
+          <span class="result-value" id="months">0</span>
+        </div>
+        <div class="result-item">
+          <span>Hari:</span>
+          <span class="result-value" id="days">0</span>
+        </div>
+        <div class="result-item">
+          <span>Total Hari:</span>
+          <span class="result-value" id="total-days">0</span>
+        </div>
+      </div>
+      <div class="message" id="message"></div>
+      <button type="button" id="reset" class="reset-button">KEMBALI KE AWAL</button>
+    </div>
+  </div>
+
+  <audio id="spooky-sound" preload="auto" loop>
+    <source src="data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAAElgDq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq6urq//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAXAAAAAAAAABJaw2OA5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//sQxAADwAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+xDECgPAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV" type="audio/mp3" />
+  </audio>
+
+  <script>
+    const messages = [
+      "Hargai setiap detik hidupmu, karena waktu tak pernah kembali.",
+      "Kebaikan adalah cahaya di kegelapan hidup.",
+      "Hidup adalah misteri, buat setiap hari berarti.",
+      "Waktu terus berjalan, tinggalkan jejak kebaikan.",
+      "Jangan takut mati, takutlah hidup tanpa tujuan.",
+      "Setiap napas adalah anugerah, syukuri selalu.",
+      "Hidupmu adalah cerita, tulis dengan kebaikan.",
+      "Kematian pasti, tapi warisan kebaikan abadi."
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('spooky-sound');
+      const form = document.getElementById('age-form');
+      const resetBtn = document.getElementById('reset');
+      const tombstone = document.getElementById('tombstone');
+      const result = document.getElementById('result');
+      const messageEl = document.getElementById('message');
+
+      for (let i = 0; i < 4; i++) {
+        const ghost = document.createElement('div');
+        ghost.className = 'ghost';
+        ghost.textContent = '👻';
+        ghost.style.left = `${Math.random() * 100}vw`;
+        ghost.style.animationDelay = `${Math.random() * 10}s`;
+        ghost.style.animationDuration = `${Math.random() * 10 + 15}s`;
+        document.body.appendChild(ghost);
+      }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const birthdate = document.getElementById('birthdate').value;
+
+        if (!name || !birthdate) {
+          alert('Harap isi semua kolom!');
+          return;
+        }
+
+        const birth = new Date(birthdate);
+        const now = new Date();
+
+        if (birth > now) {
+          alert('Tanggal lahir tidak boleh di masa depan!');
+          return;
+        }
+
+        audio.volume = 0.3;
+        audio.play().catch(err => console.error('Audio playback failed:', err));
+
+        const diffTime = Math.abs(now - birth);
+        const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        let years = now.getFullYear() - birth.getFullYear();
+        let months = now.getMonth() - birth.getMonth();
+        let days = now.getDate() - birth.getDate();
+
+        if (days < 0) {
+          months--;
+          const lastMonthDate = new Date(now.getFullYear(), now.getMonth(), 0);
+          days += lastMonthDate.getDate();
+        }
+
+        if (months < 0) {
+          years--;
+          months += 12;
+        }
+
+        document.getElementById('tombstone-name').textContent = name;
+        document.getElementById('tombstone-birth').textContent = birth.toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+        document.getElementById('tombstone-now').textContent = now.toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+
+        tombstone.style.display = 'block';
+        tombstone.style.animation = 'spin 2s forwards';
+        resetBtn.style.display = 'block';
+
+        setTimeout(() => {
+          result.style.display = 'block';
+
+          const yearsDisplay = document.getElementById('years');
+          const monthsDisplay = document.getElementById('months');
+          const daysDisplay = document.getElementById('days');
+          const totalDaysDisplay = document.getElementById('total-days');
+
+          animateCounter(yearsDisplay, 0, years, 1000);
+          animateCounter(monthsDisplay, 0, months, 1000);
+          animateCounter(daysDisplay, 0, days, 1000);
+          animateCounter(totalDaysDisplay, 0, totalDays, 2000);
+
+          setTimeout(() => {
+            messageEl.textContent = messages[Math.floor(Math.random() * messages.length)];
+            messageEl.style.opacity = 1;
+          }, 3000);
+        }, 2000);
+      });
+
+      resetBtn.addEventListener('click', () => {
+        form.reset();
+        tombstone.style.display = 'none';
+        tombstone.style.animation = '';
+        result.style.display = 'none';
+        messageEl.style.opacity = 0;
+        messageEl.textContent = '';
+        resetBtn.style.display = 'none';
+        document.getElementById('tombstone-name').textContent = '';
+        document.getElementById('tombstone-birth').textContent = '';
+        document.getElementById('tombstone-now').textContent = '';
+        document.getElementById('years').textContent = '0';
+        document.getElementById('months').textContent = '0';
+        document.getElementById('days').textContent = '0';
+        document.getElementById('total-days').textContent = '0';
+        audio.pause();
+        audio.currentTime = 0;
+      });
+
+      const animateCounter = (element, start, end, duration) => {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          const value = Math.floor(progress * (end - start) + start);
+          element.textContent = value;
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          }
+        };
+        window.requestAnimationFrame(step);
+      };
+    });
+  </script>
+</body>
+</html>
